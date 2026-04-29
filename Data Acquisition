@@ -1,0 +1,9 @@
+# 如果没装Bioconductor
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+# 安装TCGA工具包
+BiocManager::install("TCGAbiolinks")
+
+# 常用包
+install.packages(c("dplyr","tidyverse"))
