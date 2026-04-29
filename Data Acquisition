@@ -1,9 +1,34 @@
-# 如果没装Bioconductor
+# enviroment
+
 if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
+  install.packages("BiocManager")
+BiocManager::install("BioinformaticsFMRP/TCGAbiolinksGUI.data")
+BiocManager::install("BioinformaticsFMRP/TCGAbiolinks")
 
-# 安装TCGA工具包
-BiocManager::install("TCGAbiolinks")
+library(TCGAbiolinks)
+library(dplyr)
 
-# 常用包
-install.packages(c("dplyr","tidyverse"))
+Reference
+https://bioconductor.org/packages/devel/bioc/vignettes/TCGAbiolinks/inst/doc/index.html#Installation
+
+library(TCGAbiolinks)
+library(dplyr)
+
+# 1. 使用当前 GDC 支持的 STAR 流程
+query <- GDCquery(
+  project = "TCGA-LAML",
+  data.category = "Transcriptome Profiling",
+  data.type = "Gene Expression Quantification",
+  workflow.type = "STAR - Counts"  # 已替换 HTSeq
+)
+
+# 2. 防超时/断连配置（国内网络必加）
+options(timeout = 600)
+GDCdownload(query, method = "api", files.per.chunk = 20)
+
+# 3. 读取数据并生成标准对象
+data <- GDCprepare(query)
+
+# 4. 提取表达矩阵（基因 × 样本）
+expr_matrix <- assay(data, "unstranded")  # STAR-Counts 默认列名
+dim(expr_matrix)
