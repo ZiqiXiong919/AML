@@ -1,0 +1,155 @@
+Risk score
+Step 1：准备数据
+数据必须包含：
+• 基因表达矩阵（RNA-seq）
+• 生存数据：
+• OS（生存时间）
+• status（0=活，1=死亡）
+👉 数据来源：
+• TCGA
+• GEO
+
+🔬 Step 2：筛选候选基因（你的创新点）
+👉 你是：
+• lysine metabolism genes
+来源：
+• KEGG
+• MSigDB
+
+🔬 Step 3：差异分析（可选但建议）
+R
+limma / DESeq2
+目的：• 找 AML vs normal 差异基因
+👉 取交集：
+lysine genes ∩ DEGs
+
+🔬 Step 4：单因素Cox分析（关键）
+R
+coxph(Surv(time, status) ~ gene)
+得到：
+• 每个基因的：
+• HR（风险比）
+• p-value
+👉 筛选：
+• p < 0.05
+
+🔬 Step 5：LASSO回归（核心步骤🔥）
+👉 为什么用LASSO？
+• 防止过拟合
+• 自动筛选变量
+R
+library(glmnet)
+
+cv.fit <- cv.glmnet(x, y, family="cox")
+输出：
+• 最优λ
+• 保留下来的基因
+
+🔬 Step 6：得到模型系数（最关键）
+LASSO会给你：
+Gene
+Coefficient
+GeneA
+0.45
+GeneB
+-0.32
+GeneC
+0.78
+复制表格
+￼
+📊 三、Risk Score公式（论文核心）
+📌 标准公式：
+𝑅
+𝑖
+𝑠
+𝑘 
+𝑆
+𝑐
+𝑜
+𝑟
+𝑒
+=
+∑
+(
+𝐶
+𝑜
+𝑒
+𝑓
+𝑖
+×
+𝐸
+𝑥
+𝑝
+𝑟
+𝑒
+𝑠
+𝑠
+𝑖
+𝑜
+𝑛
+𝑖
+)
+￼
+🧠 举例：
+𝑅𝑖𝑠𝑘 𝑆𝑐𝑜𝑟𝑒=0.45×𝐺𝑒𝑛𝑒𝐴−0.32×𝐺𝑒𝑛𝑒𝐵+0.78×𝐺𝑒𝑛𝑒𝐶
+🔑 解释
+• coef > 0 → 高表达 = 高风险
+• coef < 0 → 高表达 = 保护
+
+📈 四、计算每个患者的Risk Score
+R
+
+riskScore = as.matrix(expr) %*% coef
+👉 得到：
+• 每个患者一个数值
+
+🔬 五、分组（高风险 vs 低风险）
+方法：
+👉 最常用：
+• 中位数分组
+R
+median(riskScore)
+
+得到：
+Patient
+RiskScore
+Group
+P1
+2.3
+High
+P2
+-1.2
+Low
+复制表格
+
+📉 六、模型验证（必须做，否则拒稿）
+
+✅ 1. Kaplan-Meier生存曲线
+R
+survfit()
+👉 结果：
+• 高风险 vs 低风险
+👉 要求：
+• p < 0.05
+
+✅ 2. ROC曲线（预测能力）
+R
+timeROC()
+👉 指标：
+• AUC
+AUC评价>0.7可以发>0.8很好>0.9很强
+
+✅ 3. 外部验证（非常加分🔥）
+用：
+• GEO数据
+
+🧬 七、独立预后分析（必须）
+R
+coxph(Surv ~ riskScore + age + gender)
+👉 证明：
+risk score 是独立因素
+
+🧠 八、Nomogram（进阶加分）
+👉 用于临床预测：
+R
+复
