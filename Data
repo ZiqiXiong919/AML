@@ -14,3 +14,18 @@ GSE37642-GPL570_series_matrix.txt.gz
 2-2 GSE12417
 GSE12417-GPL570_series_matrix.txt
 https://ftp.ncbi.nlm.nih.gov/geo/series/GSE12nnn/GSE12417/matrix/
+
+3.KEGG
+3-1 MSigDB
+KEGG_LYSINE_DEGRADATION
+
+*R:
+library(msigdbr)
+# 获取人类MSigDB基因集
+m_df <- msigdbr(species = "Homo sapiens")
+# 筛选赖氨酸降解通路
+lysine <- subset(
+    m_df,
+    gs_name == "KEGG_LYSINE_DEGRADATION")
+unique(lysine$gene_symbol) 
+*
