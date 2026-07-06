@@ -1,0 +1,22 @@
+AML_Lysine_Project
+│
+├── data
+│
+├── TCGA
+│      TCGA-LAML.star_counts.tsv
+│      TCGA-LAML.clinical.tsv
+│      TCGA-LAML.survival.tsv
+│
+├── GEO
+│      ├── GSE37642
+│      │      GSE37642-GPL570_series_matrix.txt.gz
+│      │
+│      └── GSE12417
+│             GSE12417-GPL570_series_matrix.txt.gz
+│
+├── object
+├── figure
+├── result
+└── script
+
+
