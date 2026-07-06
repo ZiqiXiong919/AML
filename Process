@@ -1,0 +1,42 @@
+Module01–03：数据下载、TCGA/GEO预处理（解决ID转换、重复基因、表达矩阵标准化）
+Module04：构建综合的Lysine metabolism gene set（MSigDB + KEGG + Reactome，去重）
+Module05–09：差异分析、单因素Cox、LASSO、多因素Cox、Risk Score
+Module10–15：外部验证、列线图、GSEA/GSVA、免疫浸润、药敏分析、湿实验验证
+
+AML_Lysine_Project/
+│
+├── data/
+│   ├── TCGA/
+│   ├── GEO/
+│   ├── gene_set/
+│   └── annotation/
+│
+├── result/
+│
+├── figure/
+│
+├── code/
+│   ├── Module01_DataDownload.R
+│   ├── Module02_TCGA_Preprocess.R
+│   ├── Module03_GEO_Preprocess.R
+│   ├── Module04_GeneSet.R
+│   ├── Module05_DEG.R
+│   ├── Module06_Unicox.R
+│   ├── Module07_LASSO.R
+│   ├── Module08_Multicox.R
+│   ├── Module09_RiskScore.R
+│   ├── Module10_Validation.R
+│   ├── Module11_Nomogram.R
+│   ├── Module12_GSEA.R
+│   ├── Module13_Immune.R
+│   ├── Module14_Drug.R
+│   └── Module15_WetLab.R
+│
+├── function/
+│   ├── plot.R
+│   ├── survival.R
+│   ├── preprocess.R
+│   ├── immune.R
+│   └── utils.R
+│
+└── README.md
